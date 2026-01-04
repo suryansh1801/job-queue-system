@@ -2,13 +2,13 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-const API_URL = "http://localhost:8000/api/jobs"; // Ensure port matches .env (5000)
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000/api/jobs";; // Ensure port matches .env (8000)
 
 export default function Home() {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
-    type: "email",
+    type: "io_wait",
     to: "user@example.com",
     body: "Hello world",
     shouldFail: false, // New state for failure simulation
@@ -32,7 +32,7 @@ export default function Home() {
   }, []);
 
   // Submit Job
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e : React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
     try {
@@ -158,7 +158,7 @@ export default function Home() {
 
 // --- Helper Components for Clean Code ---
 
-function StatusBadge({ status }) {
+function StatusBadge({ status }: { status: string }) {
   const styles = {
     QUEUED: 'bg-gray-100 text-gray-800',
     IN_PROGRESS: 'bg-blue-100 text-blue-800 animate-pulse',
@@ -167,13 +167,13 @@ function StatusBadge({ status }) {
   };
 
   return (
-    <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${styles[status] || styles.QUEUED}`}>
+    <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${styles[status as keyof typeof styles] || styles.QUEUED}`}>
       {status}
     </span>
   );
 }
 
-function ResultCell({ result, status }) {
+function ResultCell({ result, status }: { result: any; status: string }) {
   if (!result) return <span className="text-gray-400">-</span>;
 
   // If Failed, show error in red
