@@ -1,0 +1,28 @@
+services:
+  # --- Backend Service ---
+  backend:
+    build: ./backend
+    container_name: job_queue_backend
+    ports:
+      - "8000:8000"
+    environment:
+      - PORT=8000
+      - CONCURRENCY=3
+      - MAX_RETRIES=2
+      - POLL_INTERVAL_MS=1000
+      - WORK_SIMULATION_MS=3000
+    restart: always
+
+  # --- Frontend Service ---
+  frontend:
+    build: ./frontend
+    container_name: job_queue_frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    environment:
+      # Since your frontend uses "use client" (runs in browser), 
+      # it needs to reach the backend via localhost
+      - NEXT_PUBLIC_API_URL=http://localhost:8000/api/jobs
+    restart: always
