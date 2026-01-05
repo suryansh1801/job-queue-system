@@ -2,6 +2,8 @@
 
 Documentation Link : https://suryanshsahu1801.notion.site/Simple-Job-Queue-System-2de9e56e264a807bafd4f61cfac6ce4f
 
+Loom Video : https://www.loom.com/share/d74748cfb0fa41ce8ca37f6e04a4c264
+
 ## **Setup & Run Instructions**
 
 ### **Prerequisites**
@@ -16,6 +18,8 @@ This is the fastest way to run the entire system (Backend + Frontend) with zero 
 
 **1. Navigate to Project Root**
 Ensure you are in the root directory `job-queue-system/` where `docker-compose.yml` is located.
+
+Docker file is commited with the code.
 
 **2. Run Docker Compose :** 
 
@@ -45,3 +49,25 @@ git clone https://github.com/suryansh1801/job-queue-system.git
 Open a **new** terminal window.
 
 - The frontend will start on `http://localhost:3000`.
+
+### Postman APIs
+**Post Jobs**
+```bash
+curl --location 'http://localhost:8000/api/jobs' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "type": "io_wait",
+    "payload": {
+        "to": "example@email.com",
+        "body": "Random text",
+        "shouldFail": false 
+    }
+}'
+```
+
+**Get Jobs**
+```bash
+curl --location 'http://localhost:8000/api/jobs/' \
+--header 'Content-Type: application/json' \
+--data ''
+```
